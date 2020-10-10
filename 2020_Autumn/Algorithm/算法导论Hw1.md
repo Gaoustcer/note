@@ -106,9 +106,27 @@ $$但是不存在\epsilon,使得n^2lgn=\Omega(n^{2+\epsilon})$$
 
 不能使用主方法
 
+对于此问题，采用递推式展开计算
 
+assume   $$n=2^k$$
 
+$$T(n)=T(2^k)=4\times T(2^{k-1})+4^k\times k$$
 
+$$T(2^{k-1})=4\times T(2^{k-2})+4^{k-1}\times (k-1)$$
+
+代入得$$T(2^k)=16\times T(2^{k-2})+4^k(k+(k-1))$$
+
+迭代至T(1) $$T(2^k)=4^k\times T(1)+4^k\displaystyle \sum^{i=0 \to k}{i}$$
+
+利用求和公式，得到最终结果 $$T(2^k)=4^k\times T(1)+4^k\times(k+1)\times k\div2$$
+
+在k->$\infty$ 得到
+
+$$T(2^k)=\Theta(T(1)\times 4^k+4^k\times k^2)$$
+
+最终结果是
+
+$$ T(n)=\Theta(({n})^2\times log_2(n)) $$
 
 
 

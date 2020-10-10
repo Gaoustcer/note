@@ -70,48 +70,51 @@
 
 ### 输入信号
 
-| 信号名              | 位宽 | 功能                                                         | 来自                    |
-| ------------------- | ---- | ------------------------------------------------------------ | ----------------------- |
-| clk                 |      |                                                              |                         |
-| rst_n               |      |                                                              |                         |
-| m_trap_base_addr_i  | 24   | 赋值给trap_base_addr                                         |                         |
-| u_trap_base_addr_i  | 24   | 赋值给tarp_base_addr                                         |                         |
-| trap_addr_mux_i     | 2    | 选择信号，选择m_trap_base_addr_i或是u_trap_base_addr_i       |                         |
-| boot_addr_i         | 32   | 启动地址                                                     |                         |
-| dm_exception_addr_i | 32   |                                                              |                         |
-| dm_halt_addr_i      | 32   | 调试模式，停止地址                                           |                         |
-| req_i               | 1    | instruction request control                                  |                         |
-| instr_gnt_i         | 1    |                                                              |                         |
-| instr_rvalid_i      | 1    |                                                              |                         |
-| instr_rdata_i       | 32   |                                                              |                         |
-| instr_err_i         | 1    | bus error                                                    |                         |
-| instr_err_pmp_i     | 1    | PMP_error                                                    |                         |
-| clear_instr_valid_i | 1    | clear instruction valid bit                                  |                         |
-| pc_set_i            | 1    | set the program counter to a new value                       |                         |
-| mepc_i              | 32   | 中断异常发生时重新存储PC的地址                               |                         |
-| uepc                | 32   | 中断异常发生时重新存储PC的地址                               |                         |
-| depc_i              | 32   | 进入debug模式，存储PC                                        |                         |
-| pc_mux_i            | 4    | PC multiplexer choose signal                                 |                         |
-| exc_pc_mux_i        | 3    | ISR address multiplexer choose signal                        |                         |
-| jump_target_id_i    | 32   | jump target address(jump is implemented in the ID stage)     |                         |
-| jump_target_ex_i    | 32   | branch target address(branch is implemented in the EX stage) |                         |
-| hwlp_jump_i         | 1    | from Hwloop controller                                       | prefetch_buffer aligner |
-| hwlp_target_i       | 32   | branch                                                       | prefetch_buffer aligner |
-| halt_if_i           | 1    | generate the signal if_valid=(~halt_if_i)&if_ready means the if_valid=1 only when halt_if_i=1 && if_ready=1 |                         |
-| id_ready_i          | 1    | generate the signal if_ready=fetch_valid & id_ready_i means the if_ready=1 only when fetch_valid=1 && id_ready_i=1 |                         |
+| 信号名              | 位宽 | 功能                                                         | 来自                                                         |
+| ------------------- | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| clk                 |      |                                                              |                                                              |
+| rst_n               |      |                                                              |                                                              |
+| m_trap_base_addr_i  | 24   | 赋值给trap_base_addr                                         | cs_register                                                  |
+| u_trap_base_addr_i  | 24   | 赋值给tarp_base_addr                                         | cs_register                                                  |
+| trap_addr_mux_i     | 2    | 选择信号，选择m_trap_base_addr_i或是u_trap_base_addr_i       | ID_stage                                                     |
+| boot_addr_i         | 32   | 启动地址                                                     | top module external input                                    |
+| dm_exception_addr_i | 32   |                                                              | top module external input                                    |
+| dm_halt_addr_i      | 32   | 调试模式，停止地址                                           | top module external input                                    |
+| req_i               | 1    | instruction request control                                  | ID_stage                                                     |
+| instr_gnt_i         | 1    | instr_gnt_pmp=(PMP is valid)?output of PMP:input signal from top module instr_gnt_i |                                                              |
+| instr_rvalid_i      | 1    |                                                              | top module external input                                    |
+| instr_rdata_i       | 32   |                                                              | top module external input                                    |
+| instr_err_i         | 1    | bus error                                                    | 1'b0 constant                                                |
+| instr_err_pmp_i     | 1    | PMP_error                                                    | instr_err_pmp comes from PMP module when the PMP is valid and is constant 1'b0 when invalid |
+| clear_instr_valid_i | 1    | clear instruction valid bit                                  | ID_stage                                                     |
+| pc_set_i            | 1    | set the program counter to a new value                       | ID_stage                                                     |
+| mepc_i              | 32   | 中断异常发生时重新存储PC的地址                               | csr                                                          |
+| uepc                | 32   | 中断异常发生时重新存储PC的地址                               | csr                                                          |
+| depc_i              | 32   | 进入debug模式，存储PC                                        | csr                                                          |
+| pc_mux_i            | 4    | PC multiplexer choose signal                                 | ID_stage                                                     |
+| exc_pc_mux_i        | 3    | ISR address multiplexer choose signal                        | ID_stage                                                     |
+| jump_target_id_i    | 32   | jump target address(jump is implemented in the ID stage)     | ID_stage                                                     |
+| jump_target_ex_i    | 32   | branch target address(branch is implemented in the EX stage) | EX_stage                                                     |
+| hwlp_jump_i         | 1    | from Hwloop controller                                       | ID_stage                                                     |
+| hwlp_target_i       | 32   | branch                                                       | ID_stage                                                     |
+| halt_if_i           | 1    | generate the signal if_valid=(~halt_if_i)&if_ready means the if_valid=1 only when halt_if_i=1 && if_ready=1 | ID_stage                                                     |
+| id_ready_i          | 1    | generate the signal if_ready=fetch_valid & id_ready_i means the if_ready=1 only when fetch_valid=1 && id_ready_i=1 | ID_stage                                                     |
 
 ### 输出信号
 
-| 信号名              | 位宽 | 功能                                                         | 流向            | 生成自             |
-| ------------------- | ---- | ------------------------------------------------------------ | --------------- | ------------------ |
-| instr_req_o         | 1    | give the requirement to seek an instruction through the bus and the requirement is made | prefetch_buffer |                    |
-| instr_addr_o        | 32   | instruction address                                          | prefetch_buffer |                    |
-| instr_valid_id_o    | 1    | give the next stage that the instruction is valid or not,the value is 1 when **if_valid** and **instr_valid** are both 1 |                 |                    |
-| is_compressed_id_o  | 1    | is it a compressed instr,generate by the value **instr_compressed_int** when **if_valid** and **instr_valid** are both valid | the next stage  | compressed_decoder |
-| illegal_c_insn_id_o | 1    | when compressed decoder thinks it is an invalid instruction  | next_stage      | compressed_decoder |
-| pc_if_o             | 32   |                                                              |                 | aligner            |
-| pc_id_o             | 32   | pc_id_o=pc_if_o                                              |                 |                    |
-|                     |      |                                                              |                 |                    |
+| 信号名              | 位宽 | 功能                                                         | 流向                                                         | 生成自             |
+| ------------------- | ---- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------ |
+| instr_req_o         | 1    | give the requirement to seek an instruction through the bus and the requirement is made | prefetch_buffer PMP                                          |                    |
+| instr_addr_o        | 32   | instruction address                                          | prefetch_buffer                                              |                    |
+| instr_valid_id_o    | 1    | give the next stage that the instruction is valid or not,the value is 1 when **if_valid** and **instr_valid** are both 1 |                                                              |                    |
+| is_compressed_id_o  | 1    | is it a compressed instr,generate by the value **instr_compressed_int** when **if_valid** and **instr_valid** are both valid | the next stage                                               | compressed_decoder |
+| illegal_c_insn_id_o | 1    | when compressed decoder thinks it is an invalid instruction  | next_stage                                                   | compressed_decoder |
+| pc_if_o             | 32   |                                                              |                                                              | aligner            |
+| pc_id_o             | 32   | pc_id_o=pc_if_o                                              |                                                              |                    |
+| is_fetch_failed_o   | 1    | fetch_failed                                                 |                                                              |                    |
+| csr_mtvec_init_o    | 1    | tell CS register file to init mtvec                          | the value is 1 whe n pc_mux_i==PC_BOOT and pc_set_i signal is 1 |                    |
+| if_busy_o           | 1    | The IF stage busy fetching instructions                      |                                                              |                    |
+| perf_imiss          | 1    | Instruction Fetch Miss                                       |                                                              |                    |
 
 
 
