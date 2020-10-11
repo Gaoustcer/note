@@ -147,12 +147,57 @@
 
 ## 译码模块ID
 
+### 次级模块
+
 | 模块名        | 功能       | 与上级模块接口 |
 | ------------- | ---------- | -------------- |
 | register_file | 寄存器文件 |                |
 | decoder       | 译码器     |                |
 | controller    |            |                |
 | int_control   | 中断控制   |                |
+
+### 输入信号
+
+| 信号名                 | 位宽 | 来自 | 流向 |
+| ---------------------- | ---- | ---- | ---- |
+| clk                    | 1    |      |      |
+| clk_ungated_i          | 1    |      |      |
+| rst_n                  | 1    |      |      |
+| scan_cg_en_i           | 1    |      |      |
+| fetch_enable_i         | 1    |      |      |
+| instr_valid_i          | 1    |      |      |
+| instr_rdata_i          | 32   |      |      |
+| is_compressed_i        | 1    |      |      |
+| illegal_c_incs_i       | 1    |      |      |
+| branch_decision        | 1    |      |      |
+| is_fetch_failed_i      | 1    |      |      |
+| pc_id_i                | 32   |      |      |
+| ex_ready_i             |      |      |      |
+| current_priv_lvl_i     |      |      |      |
+| csr_hwlp_regid_i       |      |      |      |
+| csr_hwlp_we_i          |      |      |      |
+| csr_hwlp_data_i        |      |      |      |
+| data_misaligned_i      |      |      |      |
+| data_err_i             |      |      |      |
+| irq_i                  |      |      |      |
+| irq_sec_i              |      |      |      |
+| mie_bypass_i           |      |      |      |
+| m_irq_enable_i         |      |      |      |
+| u_irq_enable_i         |      |      |      |
+| debug_req_i            |      |      |      |
+| debug_single_step_i    |      |      |      |
+| debug_ebreakm_i        |      |      |      |
+| debug_ebreaku_i        |      |      |      |
+| trigger_match_i        |      |      |      |
+| regfile_waddr_wb_i     | 6    |      |      |
+| regfile_we_wb_i        |      |      |      |
+| regfile_wdata_wb_i     | 32   |      |      |
+| regfile_alu_we_fw_i    |      |      |      |
+| regfile_alu_wdata_fw_i |      |      |      |
+| mult_multicycle_i      |      |      |      |
+| mcounteren_i           | 32   |      |      |
+
+
 
 ## 执行模块EX
 
