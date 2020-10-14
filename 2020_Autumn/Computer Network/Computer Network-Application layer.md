@@ -186,3 +186,59 @@ cookies包含：
 * 请求报文中cookie首部行
 * 用户端含有一个cookie文件，由用户的浏览器管理
 * Web站点的后端数据库
+
+##### Web缓存（代理服务器）
+
+基本原理：Web服务器保存最近请求过的对象的副本
+
+user：让浏览器所有HTTP请求先指向Web缓存器，每个对某对象的请求被重定向到Web缓存器
+
+工作流程：
+
+* 浏览器建立到Web缓存器的TCP连接，并向Web缓存器的对象发送一个HTTP请求
+* Web缓存器进行检查，查看本地是否存储该对象的副本，有的话，Web缓存器就向客户浏览器使用HTTP响应报文返回该对象
+* Web服务器没有该对象，打开一个1与该对象的初始服务器的TCP连接，Web缓存器在缓存器到服务器的TCP连接上发送对该对象的HTTP请求，收到该请求后，初始服务器向该缓存器发送具有该对象的HTTP相应
+* Web缓存器收到该对象后，在本地存储空间存储一份副本，并向该用户的浏览器用HTTP响应报文发送该副本
+
+Web缓存器：一台？多台？
+
+def:流量强度 L$\times$a$\div$R
+
+R-传输速率 L-每个分组大小 a-分组到达的平均速率
+
+网络缓存的意义：使得分布的大流量分散化
+
+##### 条件的Get方法-缓存是否最新？
+
+使用条件GET方法：（1）请求报文中使用GET方法 （2）请求报文中包含If-Modified_since首部行
+
+代理服务器向Web服务器发送一个请求报文
+
+```http
+GET /fruit/kiwi.gif HTTP/1.1
+Host: www.exotuquecuisine.com
+```
+
+Web服务器向缓存器发送包含该请求的对象的响应报文
+
+```http
+HTTP/1.1 200 OK
+Date: Sat, 8 Oct 2011 15:39:29
+Last-Modified: Wed, 7 Sep 2011 09:23:24
+Content-Type: image/gif
+
+data data
+```
+
+缓存器在本地缓存该对象，也缓存了该对象的最后修改日期
+
+浏览器向缓存器发送请求请求该对象，缓存器需要发送一个条件GET进行最新检查
+
+```http
+GET /fruit/kiwi.gif HTTP/1.1
+Host: ww.exotiquecuisine.com
+If-Modified-Since: Wed, 7 Sep 2011 09:23:24
+```
+
+条件GET(If-Modified-Since)告诉服务器，仅当自指定日期之后该对象被修改过，才会发送该对象
+
