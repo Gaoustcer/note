@@ -40,3 +40,17 @@
 
 vector.set(int i,int k),将向量第i位置为k，假设这是整数vector
 
+### #include<vector>
+
+### vector 初始化
+
+```C++
+vector <int> v1; //empty vector
+vecotr <int> v2(10);//create a vector and allocate the space for 10 elements
+
+```
+
+
+
+
+

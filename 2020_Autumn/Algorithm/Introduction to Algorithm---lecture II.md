@@ -92,3 +92,10 @@ T(n)=nlog(n)
 compare with a and b,which is bigger?
 
 each is n bits
+
+## 算法常用记号
+
+$$f(n)=\Theta(g(n))\exists $$c<sub>1</sub> c<sub>2</sub> c<sub>1</sub>g(n)$\leq$f(n)$\leq$c<sub>2</sub>g(n)
+
+f(n)=O(g(n)) $\exists$c f(n)$\leq$c$\times$g(n) f(n)=o(g(n))  $$\lim\limits_{n\rightarrow\infty}f(n)\div g(n)=0$$
+

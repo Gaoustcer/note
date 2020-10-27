@@ -14,7 +14,7 @@ Generally, we will need to exchange for$$\Theta({log_2(n)}^2)$$ times to build t
 
 Then we have to maintain the Max-heap.
 
-
+final result is $\Theta$(n$\times$$log_2(n)$)
 
 ### When a[1]>a[2]>a[3]>...>a[n]
 
