@@ -97,6 +97,8 @@ class derived_class: access_specifier base_class
 
 access_specifier:private public protected
 
+未使用access-specifier则默认为private
+
 * public:
 
   | base_member | derived_class |
@@ -119,10 +121,23 @@ access_specifier:private public protected
   | ------------------------ | ------------- |
   | public protected private | private       |
 
-  派生类可以访问基类中所有非私有成员
+  派生类可以访问基类中所有非私有成员，基类成员如果不想被派生类的成员函数访问，应当在基类中声明为private
   
   派生类继承了所有继承的基类方法，除了：
   
   * 基类的构造函数，析构函数，和拷贝构造函数
   * 基类的重载运算符
   * 基类的友元函数
+  
+  
+  
+  ##### 继承类型
+  
+  一个类派生自基类，该基类可以被继承为public，protected或private几种类型，继承类型通过访问修饰符access-specifier实现
+  
+  * 公有继承：一个类派生自公有基类时，基类的公有成员也是派生类的公有成员，基类的保护成员也是派生类的保护成员，基类的私有成员不能被派生类直接访问，但是可以通过调用基类的公有和保护成员来访问
+  * 保护继承：当一个类派生自保护基类时，基类的公有和保护成员将成为派生类的保护成员
+  * 当一个类派生自私有基类时，基类的公有和保护成员将成为派生类的私有成员
+  * ps：protect类型，与私有类型类似，但是保护类型在派生类中可以访问
+  
+  

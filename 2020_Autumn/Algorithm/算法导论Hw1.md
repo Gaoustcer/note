@@ -130,5 +130,23 @@ $$ T(n)=\Theta(({n})^2\times log_2(n)) $$
 
 
 
+## 习题课
 
+### Question 1
+
+循环不变式：假设A[0]-A[k]之间都没有找的数字
+
+### Question 3
+
+upper bound $$lg(n!)=lg1+lg2+...+lgn<=nlgn$$
+
+lower bound$$lg(n!)=lg1+lg2+...lgn>=lg(n/2)+lg(n/2+1)+...+lgn>=n/2lg(n/2)$$
+
+### Question 4
+
+$$T(n)<=3lgn-1$$
+
+### Question 5
+
+Tree
 
